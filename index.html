@@ -12,16 +12,10 @@
 		<title>Hello, world!</title>
 	</head>
 	<body>
-		<div id="nav">
-		<!-- Image and text
-
-
-		-->
-	</div>
 	<script defer src="face-api.min.js"></script>
   	<script defer src="script.js"></script>
-	<script src="https://sdk.scdn.co/spotify-player.js"></script>
-	<script src="spotify.js"></script>
+	<!--<script src="https://sdk.scdn.co/spotify-player.js"></script>
+	<script src="spotify.js"></script>-->
 		<script>
 			function slideOut() {
 				var element = document.getElementsByClassName("jumbotron")[0]
@@ -29,12 +23,18 @@
 				element.addEventListener("animationend", () => {element.parentNode.removeChild(element), phase2()});
 			}
 			function phase2() {
-				document.getElementById("nav").innerHTML = "<nav class=\"navbar navbar-light bg-light\"><a class=\"navbar-brand\" href=\"#\">mood</a></nav>";
-				document.getElementById("panel").innerHTML = '<div class="panel panel-default"><div class="panel-body"> <video id="video" width="720" height="560" autoplay muted></video></div></div>';
+				document.getElementById("nav").innerHTML = "<nav class=\"navbar navbar-light bg-light box-shadow\"><a class=\"navbar-brand\" href=\"#\">mood</a></nav>";
+				document.getElementById("panel").innerHTML = '<div class="panel panel-default box-shadow"><div class="panel-body"> <video id="video" width="720" height="560" autoplay muted></video></div></div>';
 				//setTimeout(startRecord,500);
 				startRecord();
 			}
 		</script>
+		<div id="nav">
+		<!-- Image and text
+
+
+		-->
+		</div>
 		<div id='panel'></div>
 		<section class="jumbotron text-center slide-in">
 			<h1 class="jumbotron-heading">mood</h1>
