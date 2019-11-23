@@ -26,6 +26,24 @@
 	animation-fill-mode: forwards;
 }
 
+#panel {
+
+	text-align: center;
+}
+
+.panel {
+	opacity: 0;
+	animation: fade-in 1s;
+	animation-delay: 1s;
+    background-color: #f8f9fa;
+	margin-top: 8rem;
+	width: auto;
+	display: inline-block;
+	padding: 10rem;
+	text-align: center;
+	animation-fill-mode: forwards;
+}
+
 @keyframes fade-in {
 	from {
 		opacity: 0;
@@ -66,6 +84,7 @@
 
 .navbar {
 	position: fixed;
+	top: 0;
 	width: 100%;
 	padding-bottom: 1rem;
 	animation: fade-in 1s;
