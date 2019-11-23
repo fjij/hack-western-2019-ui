@@ -26,6 +26,11 @@
 	animation-fill-mode: forwards;
 }
 
+.output {
+	animation: fade-in 1s;
+	margin-top: 8rem;
+}
+
 #panel {
 
 	text-align: center;
