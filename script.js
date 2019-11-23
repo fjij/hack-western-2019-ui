@@ -96,13 +96,17 @@ function recordVideo() {
     //faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
     //faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
     //console.log(resizedDetections[0]['expressions'])
-    neutralAvg += detections[0]['expressions']['neutral'];
+    if(detections.length>0)
+    {
+      neutralAvg += detections[0]['expressions']['neutral'];
     happyAvg += detections[0]['expressions']['happy'];
     sadAvg += detections[0]['expressions']['sad'];
     angryAvg += detections[0]['expressions']['angry'];
     surprisedAvg += detections[0]['expressions']['surprised'];
     disgustedAvg += detections[0]['expressions']['disgusted'];
     fearfulAvg += detections[0]['expressions']['fearful'];
+    }
+    
     if(count == 10)
     {
       clearInterval(intervalSet)
