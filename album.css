@@ -1,0 +1,112 @@
+:root {
+  --jumbotron-padding-y: 3rem;
+}
+
+.jumbotron {
+  padding-top: var(--jumbotron-padding-y);
+  padding-bottom: var(--jumbotron-padding-y);
+  margin-bottom: 0;
+  background-color: #fff;
+}
+@media (min-width: 768px) {
+  .jumbotron {
+    padding-top: calc(var(--jumbotron-padding-y) * 2);
+    padding-bottom: calc(var(--jumbotron-padding-y) * 2);
+  }
+}
+
+.slide-in {
+    animation: slide-in 1s;
+    animation-timing-function:cubic-bezier();
+}
+
+.slide-out {
+    animation: slide-out 1s;
+    animation-timing-function:ease-in;
+	animation-fill-mode: forwards;
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes slide-in {
+	from {
+		margin-right: -100%;
+	}
+	to {
+		margin-right: 0;
+	}
+}
+
+@keyframes slide-out {
+	from {
+		margin-left: 0;
+		opacity: 1;
+	}
+	to {
+		margin-left: -100%;
+		opacity: 0;
+	}
+}
+
+.jumbotron .go-button {
+	opacity: 0;
+	animation: fade-in 1s;
+	animation-delay: 2s;
+	animation-fill-mode: forwards;
+	border-radius: 10rem;
+	padding: 2.5rem;
+}
+
+.navbar {
+	position: fixed;
+	width: 100%;
+	padding-bottom: 1rem;
+	animation: fade-in 1s;
+}
+
+.navbar-brand {
+	letter-spacing: -0.4rem;
+	font-size: 3rem;
+}
+
+.jumbotron p:last-child {
+  margin-bottom: 0;
+}
+
+.jumbotron .jumbotron-heading {
+	opacity: 0;
+	animation: fade-in 1s;
+	font-weight: 3000;
+	font-size: 10rem;
+	animation-fill-mode: forwards;
+	letter-spacing: -1rem;
+}
+
+.jumbotron .lead {
+	opacity: 0;
+	animation: fade-in 1s;
+	animation-delay: 1s;
+	animation-fill-mode: forwards;
+}
+
+.jumbotron .container {
+  max-width: 40rem;
+}
+
+footer {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+footer p {
+  margin-bottom: .25rem;
+}
+
+.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
