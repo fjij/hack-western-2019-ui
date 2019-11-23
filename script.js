@@ -1,7 +1,7 @@
-const video = document.getElementById('video')
 const canvas = document.createElement('canvas');
 var intervalSet;
 var count = 0;
+var video;
 
 var neutralAvg = 0;
 var happyAvg = 0;
@@ -14,12 +14,21 @@ var fearfulAvg = 0;
 var frameCount = 0;
 var mood = 0;
 
-Promise.all([
-  faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
-  faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
-  faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
-  faceapi.nets.faceExpressionNet.loadFromUri('/models')
-]).then(startVideo)
+function startRecord()
+{
+    video = document.getElementById('video')
+    video.addEventListener('play', recordVideo);
+    video.addEventListener('pause',() => {
+      clearInterval(intervalSet)  
+    })
+    Promise.all([
+    faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+    faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
+    faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
+    faceapi.nets.faceExpressionNet.loadFromUri('/models')
+  ]).then(startVideo)
+}
+
 
 function startVideo() {
   navigator.getUserMedia(
@@ -76,7 +85,7 @@ function onRecordEnd(expressionsList) {
   //console.log("Surprised Emotion Average:"+surprisedAvg)
   //console.log("Disgusted Emotion Average:"+disgustedAvg)
   //console.log("Fearful Emotion Average:"+fearfulAvg)
-  console.log("Big Mood:"+moodString) 
+  //console.log("Big Mood:"+moodString) 
   CallApi(moodString)
   CallNextSong(moodString)
 }
@@ -99,12 +108,12 @@ function recordVideo() {
     if(detections.length>0)
     {
       neutralAvg += detections[0]['expressions']['neutral'];
-    happyAvg += detections[0]['expressions']['happy'];
-    sadAvg += detections[0]['expressions']['sad'];
-    angryAvg += detections[0]['expressions']['angry'];
-    surprisedAvg += detections[0]['expressions']['surprised'];
-    disgustedAvg += detections[0]['expressions']['disgusted'];
-    fearfulAvg += detections[0]['expressions']['fearful'];
+      happyAvg += detections[0]['expressions']['happy'];
+      sadAvg += detections[0]['expressions']['sad'];
+      angryAvg += detections[0]['expressions']['angry'];
+      surprisedAvg += detections[0]['expressions']['surprised'];
+      disgustedAvg += detections[0]['expressions']['disgusted'];
+      fearfulAvg += detections[0]['expressions']['fearful'];
     }
     
     if(count == 10)
@@ -114,11 +123,6 @@ function recordVideo() {
     }
   }, 500)
 }
-
-video.addEventListener('play', recordVideo);
-video.addEventListener('pause',() => {
-  clearInterval(intervalSet)  
-})
 
 function CallApi(expression)
 {
