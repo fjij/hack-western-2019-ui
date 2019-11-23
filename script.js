@@ -44,6 +44,7 @@ function onRecordEnd(expressionsList) {
 	var tracks = video.srcObject.getTracks();
 	tracks.map(t => t.stop())
   neutralAvg /= 5;
+  neutralAvg /= 2;
   var mood = neutralAvg
   happyAvg /= 5;
   if(happyAvg>mood)
@@ -97,17 +98,91 @@ function onRecordEnd(expressionsList) {
 	removePanel(() => populateOutput(api, song))
 }
 
+function makeDivClass(className) {
+	var node = document.createElement("div");
+	node.className = className;
+	return node;
+}
+
 function populateOutput(api, song) {
 
-	var divNode = document.createElement("div");
-	divNode.className = "output slide-in";
+	var output = makeDivClass("output slide-in")
+	var album = makeDivClass("album py-5 bg-light")
+	output.appendChild(album);
+	var container = makeDivClass("container")
+	album.appendChild(container);
+	var movieRow = makeDivClass("row")
+	container.appendChild(movieRow);
+	api.movie.forEach(x => {
+		var col = makeDivClass("col-md-4")
+		movieRow.appendChild(col)
+		var card = makeDivClass("card mb-4 box-shadow")
+		col.appendChild(card)
+		var cardBody = makeDivClass("card-body")
+		card.appendChild(cardBody)
+		var cardImage = document.createElement("img");
+		cardBody.appendChild(cardImage);
+		cardImage.className = "card-img";
+		cardImage.setAttribute("src", x.Poster)
+		var cardText = document.createElement("p");
+		cardBody.appendChild(cardText);
+		cardText.className = "card-text";
+		var textNode = document.createTextNode(x.Title)
+		cardText.appendChild(textNode);
+	})
+
+
+
+
+	var musicRow = makeDivClass("row")
+	container.appendChild(musicRow);
+
+	var col = makeDivClass("col-md-12")
+	musicRow.appendChild(col)
+	var card = makeDivClass("card mb-12 box-shadow")
+	col.appendChild(card)
+	var cardBody = makeDivClass("card-body")
+	card.appendChild(cardBody)
+	var cardImage = document.createElement("img");
+	cardBody.appendChild(cardImage);
+	cardImage.className = "card-img";
+	cardImage.setAttribute("src", song.Image_url)
+	var cardText = document.createElement("p");
+	cardBody.appendChild(cardText);
+	cardText.className = "card-text";
+	var textNode = document.createTextNode(song.Song)
+	cardText.appendChild(textNode);
+
+
+	var gifRow = makeDivClass("row")
+	container.appendChild(gifRow);
+	api.giphy.forEach(x => {
+		var col = makeDivClass("col-md-4")
+		gifRow.appendChild(col)
+		var card = makeDivClass("card mb-4 box-shadow")
+		col.appendChild(card)
+		var cardBody = makeDivClass("card-body")
+		card.appendChild(cardBody)
+		var cardImage = document.createElement("img");
+		cardBody.appendChild(cardImage);
+		cardImage.className = "card-img";
+		cardImage.setAttribute("src", x)
+	})
+
+	/*
 	api.movie.forEach(x => {
 		var node = document.createElement("LI");
 		var textNode = document.createTextNode(x.Title);
 		node.appendChild(textNode);
 		divNode.appendChild(node);
 	})
-	document.getElementById('output').appendChild(divNode);
+
+	var node = document.createElement("LI");
+	var textNode = document.createTextNode(song.Song + " - ".concat(song.Artists));
+	node.appendChild(textNode);
+	divNode.appendChild(node);*/
+
+	document.getElementById('output').appendChild(output);
 }
 
 function removePanel(onComplete){
