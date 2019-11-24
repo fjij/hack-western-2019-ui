@@ -46,7 +46,7 @@ function onRecordEnd(expressionsList) {
 	var tracks = video.srcObject.getTracks();
 	tracks.map(t => t.stop())
   neutralAvg /= 5;
-  neutralAvg /= 2.5;
+  neutralAvg /= 2;
   var mood = neutralAvg
   happyAvg /= 5;
   if(happyAvg>mood)
@@ -113,13 +113,10 @@ function populateOutput(api, song) {
 	output.appendChild(album);
 	var container = makeDivClass("container")
 	album.appendChild(container);
-
-
 	var movieRow = makeDivClass("row")
 	container.appendChild(movieRow);
 	api.movie.forEach(x => {
-
-    var col = makeDivClass("col-md-4")
+		var col = makeDivClass("col-md-4")
 		movieRow.appendChild(col)
 		var card = makeDivClass("card mb-4 box-shadow")
 		col.appendChild(card)
@@ -129,27 +126,18 @@ function populateOutput(api, song) {
 		cardBody.appendChild(cardImage);
 		cardImage.className = "card-img";
 		cardImage.setAttribute("src", x.Poster)
-    cardImage.style.marginBottom = "5%";
-
-    var cardText = document.createElement("p");
+		var cardText = document.createElement("p");
 		cardBody.appendChild(cardText);
 		cardText.className = "card-text";
 		var textNode = document.createTextNode(x.Title)
-    cardText.appendChild(textNode);
-    cardText.style.textAlign = "center";
-
-    var cardLongText = document.createElement("p");
-    cardBody.appendChild(cardLongText);
-    cardLongText.className = "card-long-text";
-    var longTextNode = document.createTextNode(x.Summary)
-		cardLongText.appendChild(longTextNode);
+		cardText.appendChild(textNode);
 	})
+
+
 
 
 	var musicRow = makeDivClass("row")
 	container.appendChild(musicRow);
-  musicRow.style.margin = "0 0 2% 0";
-
 
 	var col = makeDivClass("col-md-12")
 	musicRow.appendChild(col)
@@ -157,22 +145,15 @@ function populateOutput(api, song) {
 	col.appendChild(card)
 	var cardBody = makeDivClass("card-body")
 	card.appendChild(cardBody)
-
-  var cardText = document.createElement("p");
-	cardBody.appendChild(cardText);
-	cardText.className = "card-text";
-	var textNode = document.createTextNode(song.Song)
-	cardText.appendChild(textNode);
-  cardText.style.margin = "0 auto 2% auto";
-  cardText.style.textAlign = "center";
-
 	var cardImage = document.createElement("img");
 	cardBody.appendChild(cardImage);
 	cardImage.className = "card-img";
 	cardImage.setAttribute("src", song.Image_url)
-  cardImage.style.width = "50%";
-  cardImage.style.display = "block";
-  cardImage.style.margin = "auto";
+	var cardText = document.createElement("p");
+	cardBody.appendChild(cardText);
+	cardText.className = "card-text";
+	var textNode = document.createTextNode(song.Song)
+	cardText.appendChild(textNode);
 
 
 	var gifRow = makeDivClass("row")
@@ -206,7 +187,7 @@ function populateOutput(api, song) {
 	document.getElementById('output').appendChild(output);
 }
 
-function removePanel(onComplete) {
+function removePanel(onComplete){
 	var element = document.getElementById("panel")
 	element.classList.add('slide-out');
 	element.addEventListener("animationend", () => {element.parentNode.removeChild(element); onComplete()});
