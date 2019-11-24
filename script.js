@@ -182,9 +182,12 @@ function populateOutput(api) {
 		cardImage.className = "card-img";
 		cardImage.setAttribute("src", x.Poster)
     cardImage.style.marginBottom = "5%";
-
+	var cardLink = document.createElement("a");
+		cardBody.appendChild(cardLink)
+		cardLink.setAttribute("href", getYouTubeURL(x.Title + " trailer"));
+		cardLink.setAttribute("target", "_blank");
     var cardText = document.createElement("h4");
-		cardBody.appendChild(cardText);
+		cardLink.appendChild(cardText);
 		cardText.className = "card-text";
 		var textNode = document.createTextNode(x.Title)
     cardText.appendChild(textNode);
@@ -322,4 +325,13 @@ function CallNextSong(expression)
     xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
     xmlHttp.send( null );
     return xmlHttp.responseText;
+}
+
+function getYouTubeURL(title)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "POST", "https://fjij.api.stdlib.com/hack-western-2019@dev/youtube/?title="+title,false);
+    xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+    xmlHttp.send( null );
+    return xmlHttp.responseText.replace("\"", "");
 }
