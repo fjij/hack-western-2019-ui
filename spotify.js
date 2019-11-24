@@ -1,4 +1,4 @@
-    const hash = window.location.hash
+  const hash = window.location.hash
     .substring(1)
     .split('&')
     .reduce(function (initial, item) {
@@ -29,16 +29,16 @@
         name: 'Big Mood',
         getOAuthToken: cb => { cb(token); }
       });
-    
+
       // Error handling
       player.addListener('initialization_error', ({ message }) => { console.error(message); });
       player.addListener('authentication_error', ({ message }) => { console.error(message); });
       player.addListener('account_error', ({ message }) => { console.error(message); });
       player.addListener('playback_error', ({ message }) => { console.error(message); });
-    
+
       // Playback status updates
       player.addListener('player_state_changed', state => { console.log(state); });
-    
+
       // Ready
       player.addListener('ready', ({ device_id }) => {
         console.log('Ready with Device ID', device_id);
@@ -48,27 +48,83 @@
           play(device_id);
         }
       });
-    
+
       // Not Ready
       player.addListener('not_ready', ({ device_id }) => {
         console.log('Device ID has gone offline', device_id);
       });
-    
+
       // Connect to the player!
       player.connect();
     };
     function play(device_id) {
       console.log("Token: " + token);
+      console.log("TokenPlay: " + token);
       $.ajax({
       url: "https://api.spotify.com/v1/me/player/play?device_id=" + device_id,
       type: "PUT",
       data: '{"uris": ["spotify:track:{user_id}"]}',
       beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'Bearer ' + token );},
-      success: function(data) { 
+      success: function(data) {
         console.log(data)
       },
       failure: function(err) {
         console.log(err);
       }
+        url: "https://api.spotify.com/v1/me/player/play?device_id=" + device_id,
+        type: "PUT",
+        data: '{"uris": ["spotify:track:7uenITonAmg7wXmFd3kkms"]}',
+        beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'Bearer ' + token );},
+        success: function(data) {
+          console.log(data)
+        },
+        failure: function(err) {
+          console.log(err);
+        }
+      });
+    }
+    function pause(device_id){
+      console.log("TokenPause:" + token);
+      $.ajax({
+        url: "https://api.spotify.com/v1/me/player/pause?device_id=" + device_id,
+        type: "PUT",
+        data: '{"uris": ["spotify:track:7uenITonAmg7wXmFd3kkms"]}',
+        beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'Bearer ' + token );},
+        success: function(data) {
+          console.log(data)
+        },
+        failure: function(err) {
+          console.log(err);
+        }
+      });
+    }
+    function next(device_id){
+      console.log("TokenNext:"+token);
+      $.ajax({
+        url: "https://api.spotify.com/v1/me/player/next?device_id=" + device_id,
+        type: "PUT",
+        data: '{"uris": ["spotify:track:7uenITonAmg7wXmFd3kkms"]}',
+        beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'Bearer ' + token );},
+        success: function(data) {
+          console.log(data)
+        },
+        failure: function(err) {
+          console.log(err);
+        }
+      });
+    }
+    function previous(){
+      console.log("TokenPrevious:"+token);
+      $.ajax({
+        url: "https://api.spotify.com/v1/me/player/previous?device_id=" + device_id,
+        type: "PUT",
+        data: '{"uris": ["spotify:track:7uenITonAmg7wXmFd3kkms"]}',
+        beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'Bearer ' + token );},
+        success: function(data) {
+          console.log(data)
+        },
+        failure: function(err) {
+          console.log(err);
+        }
       });
     }
