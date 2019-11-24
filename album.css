@@ -26,6 +26,13 @@
 	animation-fill-mode: forwards;
 }
 
+.music {
+	position: fixed;
+	z-index: 2;
+	bottom: 0;
+	left: 0;
+}
+
 .output {
 	animation: fade-in 1s;
 	margin-top: 8rem;

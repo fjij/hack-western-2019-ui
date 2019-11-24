@@ -130,7 +130,7 @@ function populateOutput(api, song) {
 		cardImage.setAttribute("src", x.Poster)
     cardImage.style.marginBottom = "5%";
 
-    var cardText = document.createElement("p");
+    var cardText = document.createElement("h4");
 		cardBody.appendChild(cardText);
 		cardText.className = "card-text";
 		var textNode = document.createTextNode(x.Title)
@@ -145,33 +145,13 @@ function populateOutput(api, song) {
 	})
 
 
-	var musicRow = makeDivClass("row")
+	/*var musicRow = makeDivClass("row")
 	container.appendChild(musicRow);
   musicRow.style.margin = "0 0 2% 0";
 
 
-	var col = makeDivClass("col-md-12")
-	musicRow.appendChild(col)
-	var card = makeDivClass("card mb-12 box-shadow")
-	col.appendChild(card)
-	var cardBody = makeDivClass("card-body")
-	card.appendChild(cardBody)
-
-  var cardText = document.createElement("p");
-	cardBody.appendChild(cardText);
-	cardText.className = "card-text";
-	var textNode = document.createTextNode(song.Song)
-	cardText.appendChild(textNode);
-  cardText.style.margin = "0 auto 2% auto";
-  cardText.style.textAlign = "center";
-
-	var cardImage = document.createElement("img");
-	cardBody.appendChild(cardImage);
-	cardImage.className = "card-img";
-	cardImage.setAttribute("src", song.Image_url)
-  cardImage.style.width = "50%";
-  cardImage.style.display = "block";
-  cardImage.style.margin = "auto";
+  	var col = makeDivClass("col-md-12")
+  	musicRow.appendChild(col)*/
 
 
 	var gifRow = makeDivClass("row")
@@ -189,6 +169,21 @@ function populateOutput(api, song) {
 		cardImage.setAttribute("src", x)
 	})
 
+	var card = makeDivClass("card mb-12 box-shadow music")
+	container.appendChild(card)
+	var cardBody = makeDivClass("card-body")
+	card.appendChild(cardBody)
+
+	var cardText = document.createElement("p");
+	cardBody.appendChild(cardText);
+	cardText.className = "card-text";
+	var textNode = document.createTextNode(song.Song)
+	cardText.appendChild(textNode);
+
+	var cardImage = document.createElement("img");
+	cardBody.appendChild(cardImage);
+	cardImage.className = "card-img";
+	cardImage.setAttribute("src", song.Image_url)
 	/*
 	api.movie.forEach(x => {
 		var node = document.createElement("LI");
