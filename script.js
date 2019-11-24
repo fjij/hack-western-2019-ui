@@ -14,6 +14,8 @@ var fearfulAvg = 0;
 var frameCount = 0;
 var mood = 0;
 
+var device_id = "4c8dcab716a38ad3a85aeaf894d7d3b2c70e4c6a";
+
 function startRecord()
 {
     video = document.getElementById('video')
