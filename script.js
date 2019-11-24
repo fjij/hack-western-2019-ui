@@ -17,6 +17,7 @@ var mood = 0;
 
 var device_id = "4c8dcab716a38ad3a85aeaf894d7d3b2c70e4c6a";
 
+
 function startRecord()
 {
     video = document.getElementById('video')
@@ -160,7 +161,8 @@ function populateOutput(api, song) {
   var cardText = document.createElement("p");
 	cardBody.appendChild(cardText);
 	cardText.className = "card-text";
-	var textNode = document.createTextNode(song.Song)
+  var textNode = document.createTextNode(song.Song)
+  play(device_id,song['id'])
 	cardText.appendChild(textNode);
   cardText.style.margin = "0 auto 2% auto";
   cardText.style.textAlign = "center";
@@ -168,7 +170,8 @@ function populateOutput(api, song) {
 	var cardImage = document.createElement("img");
 	cardBody.appendChild(cardImage);
 	cardImage.className = "card-img";
-	cardImage.setAttribute("src", song.Image_url)
+  cardImage.setAttribute("src", song.Image_url)
+  cardImage.setAttribute("onclick","pause(device_id)")
   cardImage.style.width = "50%";
   cardImage.style.display = "block";
   cardImage.style.margin = "auto";
