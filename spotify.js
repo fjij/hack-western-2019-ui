@@ -39,7 +39,7 @@ const hash = window.location.hash
       // Ready
       player.addListener('ready', ({ device_id }) => {
         console.log('Ready with Device ID', device_id);
-		setLocalDeviceID(device_id);
+		  setLocalDeviceID(device_id);
         //play(device_id);
       });
 

@@ -30,15 +30,6 @@
 				var element = document.getElementsByClassName("jumbotron")[0]
 				element.classList.add('slide-out');
 				element.addEventListener("animationend", () => {element.parentNode.removeChild(element), phase2()});
-				var timeleft = 10;
-				var downloadTimer = setInterval(function(){
-				document.getElementById("countdown").innerHTML = timeleft + " seconds remaining";
-				timeleft -= 1;
-				if(timeleft <= 0){
-					clearInterval(downloadTimer);
-					document.getElementById("countdown").innerHTML = "Finished"
-				}
-				}, 1000);
 			}
 			function phase2() {
 				document.getElementById("nav").innerHTML = "<nav class=\"navbar navbar-light bg-light box-shadow\"><a class=\"navbar-brand\" href=\"#\">mood</a></nav>";
@@ -54,15 +45,17 @@
 		-->
 		</div>
 		<div id='panel'></div>
-		<div id="countdown"></div> 
-		<section class="jumbotron text-center slide-in">
+		<section class="jumbotron text-center slide-in" id="countdown">
 			<h1 class="jumbotron-heading">mood</h1>
 			<p class="lead text-muted">How are you feeling?</p>
 			<br />
 			<br />
 			<a href="#" class="btn btn-primary btn-lg active go-button" onclick="slideOut()" role="button" aria-pressed="true">Go</a>
 		</section>
-		<div id='output'><div>
+		<div class="scrolling-wrapper">
+
+		</div>
+		<div id="output">
 
 			<!--<button onclick="pause('4c8dcab716a38ad3a85aeaf894d7d3b2c70e4c6a')">Pause</button>
 			<button onclick="next('4c8dcab716a38ad3a85aeaf894d7d3b2c70e4c6a')">Next</button>

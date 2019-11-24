@@ -42,10 +42,10 @@ function startRecord()
       clearInterval(intervalSet)
     })
     Promise.all([
-    faceapi.nets.tinyFaceDetector.loadFromUri('models'),
-    faceapi.nets.faceLandmark68Net.loadFromUri('models'),
-    faceapi.nets.faceRecognitionNet.loadFromUri('models'),
-    faceapi.nets.faceExpressionNet.loadFromUri('models')
+    faceapi.nets.tinyFaceDetector.loadFromUri('./models'),
+    faceapi.nets.faceLandmark68Net.loadFromUri('./models'),
+    faceapi.nets.faceRecognitionNet.loadFromUri('./models'),
+    faceapi.nets.faceExpressionNet.loadFromUri('./models')
   ]).then(startVideo)
 }
 
@@ -166,8 +166,7 @@ function generateOutput() {
 		document.getElementById('output').appendChild(output);
 }
 function populateOutput(api) {
-
-	container = document.getElementsByClassName("output-container")[0];
+	var container = document.getElementsByClassName("output-container")[0];
 	var movieRow = makeDivClass("row")
 	container.appendChild(movieRow);
 	api.movie.forEach(x => {
@@ -195,16 +194,32 @@ function populateOutput(api) {
     cardBody.appendChild(cardLongText);
     cardLongText.className = "card-long-text";
     var longTextNode = document.createTextNode(x.Summary)
-		cardLongText.appendChild(longTextNode);
+    cardLongText.appendChild(longTextNode);
+    
+    var plusButton = document.createElement("button");
+    cardBody.appendChild(plusButton);
+    plusButton.className = "fa fa-plus";
+    plusButton.id = "plusBtn"
+    plusButton.addEventListener("click", function(){
+      addToList(x);
+    });
 	})
 
+  function addToList(x)
+  {
+    console.log(x)
+    var container = document.getElementsByClassName("navbar-brand")[0];
+		var cardImage = document.createElement("img");
+		container.appendChild(cardImage);
+		cardImage.className = "card-img fav scrolling-wrapper-flexbox card";
+		cardImage.setAttribute("src", x.Poster)
+  }
 
 	/*var musicRow = makeDivClass("row")
 	container.appendChild(musicRow);
   musicRow.style.margin = "0 0 2% 0";
   	var col = makeDivClass("col-md-12")
   	musicRow.appendChild(col)*/
-
 
 	var gifRow = makeDivClass("row")
 	container.appendChild(gifRow);
@@ -241,18 +256,34 @@ function removePanel(onComplete) {
 	element.addEventListener("animationend", () => {element.parentNode.removeChild(element); onComplete()});
 }
 
+function countDown()
+{
+  var timeleft = 10;
+				var downloadTimer = setInterval(function(){
+				document.getElementById("countdown").innerHTML = timeleft + " seconds remaining";
+				timeleft -= 1;
+				if(timeleft <= 0){
+					clearInterval(downloadTimer);
+					document.getElementById("countdown").innerHTML = "Finished"
+				}
+				}, 1000);
+}
+
 function recordVideo() {
   const canvas = faceapi.createCanvasFromMedia(video)
-  document.body.append(canvas)
+  var videoDiv = document.getElementById("video");
+  videoDiv.appendChild(canvas);
+  //document.body.(canvas)
   const displaySize = { width: video.width, height: video.height }
   faceapi.matchDimensions(canvas, displaySize)
   intervalSet = setInterval(async () => {
     const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
     const resizedDetections = faceapi.resizeResults(detections, displaySize)
     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-    //faceapi.draw.drawDetections(canvas, resizedDetections)
-    //faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
-    //faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
+    faceapi.draw.drawDetections(canvas, resizedDetections)
+    faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
+    //canvas.getElementById("countdown")
+    faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
     //console.log(resizedDetections[0]['expressions'])
     if(detections.length>0)
     {
@@ -264,14 +295,14 @@ function recordVideo() {
       disgustedAvg += detections[0]['expressions']['disgusted'];
       fearfulAvg += detections[0]['expressions']['fearful'];
     }
-
+    //countDown();
 	  count++;
     if(count == 5)
     {
       clearInterval(intervalSet)
       onRecordEnd(detections)
     }
-  }, 500)
+  }, 200)
 }
 
 function CallApi(expression)

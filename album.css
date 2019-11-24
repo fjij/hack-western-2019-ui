@@ -206,3 +206,33 @@ footer p {
   .fa-user:hover {
 	color: #eee;
   }
+
+  .fav{
+	  position: top;
+	  margin-left: 20px;
+	  max-width: 5rem;
+	  max-height: 11rem;
+  }
+
+  .scrolling-wrapper-flexbox {
+	  display: flex;
+	  flex-wrap: nowrap;
+	  overflow: auto;
+  }
+  .card {
+	display: inline-block;
+}
+
+.canvas{
+	position: absolute;
+}
+
+.body {
+	margin: 0;
+	padding: 0;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+  }
