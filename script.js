@@ -17,6 +17,7 @@ var mood = 0;
 
 var device_id = "4c8dcab716a38ad3a85aeaf894d7d3b2c70e4c6a";
 
+
 function startRecord()
 {
     video = document.getElementById('video')
@@ -148,8 +149,6 @@ function populateOutput(api, song) {
 	/*var musicRow = makeDivClass("row")
 	container.appendChild(musicRow);
   musicRow.style.margin = "0 0 2% 0";
-
-
   	var col = makeDivClass("col-md-12")
   	musicRow.appendChild(col)*/
 
