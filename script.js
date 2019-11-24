@@ -15,8 +15,24 @@ var fearfulAvg = 0;
 var frameCount = 0;
 var mood = 0;
 
-var device_id = "4c8dcab716a38ad3a85aeaf894d7d3b2c70e4c6a";
+var local_device_id = "";
 
+var song_id;
+
+var playing = true;
+
+function setLocalDeviceID(device_id) {
+	local_device_id = device_id;
+}
+
+function togglePlayPause() {
+	if (playing) {
+		pause();
+	} else {
+		resume(local_device_id);
+	}
+	playing = !playing;
+}
 
 function startRecord()
 {
@@ -93,12 +109,25 @@ function onRecordEnd(expressionsList) {
   //console.log("Fearful Emotion Average:"+fearfulAvg)
   //console.log("Big Mood:"+moodString)
   console.log(moodString);
-  var api = JSON.parse(CallApi(moodString));
-  var song = JSON.parse(CallNextSong(moodString));
+  /*var api = JSON.parse(CallApi(moodString));
+  var song =
   console.log(api);
-  console.log(song);
-	removePanel(() => populateOutput(api, song))
+  console.log(song);*/
+  	document.getElementsByClassName("navbar-brand")[0].innerHTML = moodString.toLowerCase();
+	removePanel(() => {
+		generateOutput();
+		populateOutput(JSON.parse(CallApi(moodString)));
+		populateOutput(JSON.parse(CallApi(moodString)));
+		loadPlayer(JSON.parse(CallNextSong(moodString)));
+	})
 }
+
+window.onscroll = function(ev) {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
+		populateOutput(JSON.parse(CallApi(moodString)));
+        // you're at the bottom of the page
+    }
+};
 
 function makeDivClass(className) {
 	var node = document.createElement("div");
@@ -106,15 +135,39 @@ function makeDivClass(className) {
 	return node;
 }
 
-function populateOutput(api, song) {
+function loadPlayer(song) {
+		var card = makeDivClass("card mb-12 box-shadow music")
+		document.getElementsByTagName('body')[0].appendChild(card)
+		var cardBody = makeDivClass("card-body")
+		card.appendChild(cardBody)
 
-	var output = makeDivClass("output slide-in")
-	var album = makeDivClass("album py-5 bg-light")
-	output.appendChild(album);
-	var container = makeDivClass("container")
-	album.appendChild(container);
+		var cardImage = document.createElement("img");
+		cardBody.appendChild(cardImage);
+		cardImage.className = "card-img";
+		cardImage.setAttribute("src", song.Image_url)
+		cardImage.setAttribute("onclick", "togglePlayPause()")
+		play(local_device_id, song.id);
 
+		var cardText =  makeDivClass("card-text")
+		cardBody.appendChild(cardText);
+		hnode = document.createElement("h4");
+		pnode = document.createElement("p");
+		cardText.appendChild (hnode);
+		cardText.appendChild(pnode)
+		hnode.appendChild(document.createTextNode(song.Song));
+		pnode.appendChild(document.createTextNode(song.Artists.join(", ")));
+}
+function generateOutput() {
+		var output = makeDivClass("output slide-in")
+		var album = makeDivClass("album py-5 bg-light")
+		output.appendChild(album);
+		var container = makeDivClass("container output-container")
+		album.appendChild(container);
+		document.getElementById('output').appendChild(output);
+}
+function populateOutput(api) {
 
+	container = document.getElementsByClassName("output-container")[0];
 	var movieRow = makeDivClass("row")
 	container.appendChild(movieRow);
 	api.movie.forEach(x => {
@@ -168,21 +221,6 @@ function populateOutput(api, song) {
 		cardImage.setAttribute("src", x)
 	})
 
-	var card = makeDivClass("card mb-12 box-shadow music")
-	container.appendChild(card)
-	var cardBody = makeDivClass("card-body")
-	card.appendChild(cardBody)
-
-	var cardText = document.createElement("p");
-	cardBody.appendChild(cardText);
-	cardText.className = "card-text";
-	var textNode = document.createTextNode(song.Song)
-	cardText.appendChild(textNode);
-
-	var cardImage = document.createElement("img");
-	cardBody.appendChild(cardImage);
-	cardImage.className = "card-img";
-	cardImage.setAttribute("src", song.Image_url)
 	/*
 	api.movie.forEach(x => {
 		var node = document.createElement("LI");
@@ -195,8 +233,6 @@ function populateOutput(api, song) {
 	var textNode = document.createTextNode(song.Song + " - ".concat(song.Artists));
 	node.appendChild(textNode);
 	divNode.appendChild(node);*/
-
-	document.getElementById('output').appendChild(output);
 }
 
 function removePanel(onComplete) {

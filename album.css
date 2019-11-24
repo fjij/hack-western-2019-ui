@@ -33,6 +33,11 @@
 	left: 0;
 }
 
+.music img{
+	width: 6rem;
+	height: 6rem;
+}
+
 .output {
 	animation: fade-in 1s;
 	margin-top: 8rem;
@@ -92,6 +97,21 @@
 	animation-fill-mode: forwards;
 	border-radius: 10rem;
 	padding: 2.5rem;
+	background-color: #000;
+}
+
+.music .card-text {
+	float:left;
+	margin-left: 1rem;
+}
+
+.music .card-img {
+	float:left;
+}
+
+.music .card-img:hover {
+	float:left;
+	opacity: 0.8;
 }
 
 .navbar {
@@ -144,13 +164,13 @@ footer p {
 .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .15); }
 
 /* Container needed to position the overlay. Adjust the width as needed */
-  
+
   /* Make the image to responsive */
   .image {
 	width: 100%;
 	height: auto;
   }
-  
+
   /* The overlay effect (full height and width) - lays on top of the container and over the image */
   .overlay {
 	position: absolute;
@@ -164,12 +184,12 @@ footer p {
 	transition: .3s ease;
 	background-color: red;
   }
-  
+
   /* When you mouse over the container, fade in the overlay icon*/
   .container:hover .overlay {
 	opacity: 1;
   }
-  
+
   /* The icon inside the overlay is positioned in the middle vertically and horizontally */
   .icon {
 	color: white;
@@ -181,7 +201,7 @@ footer p {
 	-ms-transform: translate(-50%, -50%);
 	text-align: center;
   }
-  
+
   /* When you move the mouse over the icon, change color */
   .fa-user:hover {
 	color: #eee;
