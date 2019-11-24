@@ -1,4 +1,6 @@
 const canvas = document.createElement('canvas');
+
+
 var intervalSet;
 var count = 0;
 var video;
@@ -21,13 +23,13 @@ function startRecord()
     video = document.getElementById('video')
     video.addEventListener('play', recordVideo);
     video.addEventListener('pause',() => {
-      clearInterval(intervalSet)  
+      clearInterval(intervalSet)
     })
     Promise.all([
-    faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
-    faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
-    faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
-    faceapi.nets.faceExpressionNet.loadFromUri('/models')
+    faceapi.nets.tinyFaceDetector.loadFromUri('models'),
+    faceapi.nets.faceLandmark68Net.loadFromUri('models'),
+    faceapi.nets.faceRecognitionNet.loadFromUri('models'),
+    faceapi.nets.faceExpressionNet.loadFromUri('models')
   ]).then(startVideo)
 }
 
@@ -41,40 +43,42 @@ function startVideo() {
 }
 var moodString = "Neutral";
 function onRecordEnd(expressionsList) {
-  video.parentNode.removeChild(video)
-  neutralAvg /= 10;
+	var tracks = video.srcObject.getTracks();
+	tracks.map(t => t.stop())
+  neutralAvg /= 5;
+  neutralAvg /= 2;
   var mood = neutralAvg
-  happyAvg /= 10;
+  happyAvg /= 5;
   if(happyAvg>mood)
   {
     mood = happyAvg
     moodString = "Happy";
   }
-  sadAvg /= 10;
+  sadAvg /= 5;
   if(sadAvg>mood)
   {
     mood = sadAvg
     moodString = "Sad";
   }
-  angryAvg /= 10;
+  angryAvg /= 5;
   if(angryAvg>mood)
   {
     mood = angryAvg
     moodString = "Angry";
   }
-  surprisedAvg /= 10;
+  surprisedAvg /= 5;
   if(surprisedAvg>mood)
   {
     mood = surprisedAvg
     moodString = "Surprised";
   }
-  disgustedAvg /= 10; 
+  disgustedAvg /= 5;
   if(disgustedAvg>mood)
   {
     mood = disgustedAvg
     moodString = "Disgusted";
   }
-  fearfulAvg /= 10;
+  fearfulAvg /= 5;
   if(fearfulAvg>mood)
   {
     mood = fearfulAvg
@@ -87,11 +91,107 @@ function onRecordEnd(expressionsList) {
   //console.log("Surprised Emotion Average:"+surprisedAvg)
   //console.log("Disgusted Emotion Average:"+disgustedAvg)
   //console.log("Fearful Emotion Average:"+fearfulAvg)
-  //console.log("Big Mood:"+moodString) 
-  CallApi(moodString)
-  CallNextSong(moodString)
+  //console.log("Big Mood:"+moodString)
+  console.log(moodString);
+  var api = JSON.parse(CallApi(moodString));
+  var song = JSON.parse(CallNextSong(moodString));
+  console.log(api);
+  console.log(song);
+	removePanel(() => populateOutput(api, song))
 }
 
+function makeDivClass(className) {
+	var node = document.createElement("div");
+	node.className = className;
+	return node;
+}
+
+function populateOutput(api, song) {
+
+	var output = makeDivClass("output slide-in")
+	var album = makeDivClass("album py-5 bg-light")
+	output.appendChild(album);
+	var container = makeDivClass("container")
+	album.appendChild(container);
+	var movieRow = makeDivClass("row")
+	container.appendChild(movieRow);
+	api.movie.forEach(x => {
+		var col = makeDivClass("col-md-4")
+		movieRow.appendChild(col)
+		var card = makeDivClass("card mb-4 box-shadow")
+		col.appendChild(card)
+		var cardBody = makeDivClass("card-body")
+		card.appendChild(cardBody)
+		var cardImage = document.createElement("img");
+		cardBody.appendChild(cardImage);
+		cardImage.className = "card-img";
+		cardImage.setAttribute("src", x.Poster)
+		var cardText = document.createElement("p");
+		cardBody.appendChild(cardText);
+		cardText.className = "card-text";
+		var textNode = document.createTextNode(x.Title)
+		cardText.appendChild(textNode);
+	})
+
+
+
+
+	var musicRow = makeDivClass("row")
+	container.appendChild(musicRow);
+
+	var col = makeDivClass("col-md-12")
+	musicRow.appendChild(col)
+	var card = makeDivClass("card mb-12 box-shadow")
+	col.appendChild(card)
+	var cardBody = makeDivClass("card-body")
+	card.appendChild(cardBody)
+	var cardImage = document.createElement("img");
+	cardBody.appendChild(cardImage);
+	cardImage.className = "card-img";
+	cardImage.setAttribute("src", song.Image_url)
+	var cardText = document.createElement("p");
+	cardBody.appendChild(cardText);
+	cardText.className = "card-text";
+	var textNode = document.createTextNode(song.Song)
+	cardText.appendChild(textNode);
+
+
+	var gifRow = makeDivClass("row")
+	container.appendChild(gifRow);
+	api.giphy.forEach(x => {
+		var col = makeDivClass("col-md-4")
+		gifRow.appendChild(col)
+		var card = makeDivClass("card mb-4 box-shadow")
+		col.appendChild(card)
+		var cardBody = makeDivClass("card-body")
+		card.appendChild(cardBody)
+		var cardImage = document.createElement("img");
+		cardBody.appendChild(cardImage);
+		cardImage.className = "card-img";
+		cardImage.setAttribute("src", x)
+	})
+
+	/*
+	api.movie.forEach(x => {
+		var node = document.createElement("LI");
+		var textNode = document.createTextNode(x.Title);
+		node.appendChild(textNode);
+		divNode.appendChild(node);
+	})
+
+	var node = document.createElement("LI");
+	var textNode = document.createTextNode(song.Song + " - ".concat(song.Artists));
+	node.appendChild(textNode);
+	divNode.appendChild(node);*/
+
+	document.getElementById('output').appendChild(output);
+}
+
+function removePanel(onComplete){
+	var element = document.getElementById("panel")
+	element.classList.add('slide-out');
+	element.addEventListener("animationend", () => {element.parentNode.removeChild(element); onComplete()});
+}
 
 function recordVideo() {
   const canvas = faceapi.createCanvasFromMedia(video)
@@ -99,7 +199,6 @@ function recordVideo() {
   const displaySize = { width: video.width, height: video.height }
   faceapi.matchDimensions(canvas, displaySize)
   intervalSet = setInterval(async () => {
-    count++;
     const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
     const resizedDetections = faceapi.resizeResults(detections, displaySize)
     canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
@@ -117,8 +216,9 @@ function recordVideo() {
       disgustedAvg += detections[0]['expressions']['disgusted'];
       fearfulAvg += detections[0]['expressions']['fearful'];
     }
-    
-    if(count == 10)
+
+	  count++;
+    if(count == 5)
     {
       clearInterval(intervalSet)
       onRecordEnd(detections)
@@ -132,8 +232,7 @@ function CallApi(expression)
     xmlHttp.open( "POST", "https://fjij.api.stdlib.com/hack-western-2019@dev/mood_recommendations/?expression="+expression,false);
     xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
     xmlHttp.send( null );
-    console.log(xmlHttp.responseText)
-    //return xmlHttp.responseText;
+    return xmlHttp.responseText;
 }
 
 
@@ -143,6 +242,5 @@ function CallNextSong(expression)
     xmlHttp.open( "POST", "https://fjij.api.stdlib.com/hack-western-2019@dev/spotify/?expression="+expression,false);
     xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
     xmlHttp.send( null );
-    console.log(xmlHttp.responseText)
-    //return xmlHttp.responseText;
+    return xmlHttp.responseText;
 }

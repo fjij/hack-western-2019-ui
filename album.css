@@ -26,6 +26,11 @@
 	animation-fill-mode: forwards;
 }
 
+.output {
+	animation: fade-in 1s;
+	margin-top: 8rem;
+}
+
 #panel {
 
 	text-align: center;
@@ -39,7 +44,7 @@
 	margin-top: 8rem;
 	width: auto;
 	display: inline-block;
-	padding: 10rem;
+	padding: 2rem;
 	text-align: center;
 	animation-fill-mode: forwards;
 }
@@ -88,6 +93,7 @@
 	width: 100%;
 	padding-bottom: 1rem;
 	animation: fade-in 1s;
+  z-index: 1;
 }
 
 .navbar-brand {
@@ -128,4 +134,4 @@ footer p {
   margin-bottom: .25rem;
 }
 
-.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .15); }
