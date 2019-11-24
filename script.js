@@ -1,6 +1,5 @@
 const canvas = document.createElement('canvas');
 
-
 var intervalSet;
 var count = 0;
 var video;
